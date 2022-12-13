@@ -4,7 +4,7 @@ Gestione semplice dei LED RGB per Arduino.
 
 Autore: **Daniele Rossi**
 
-Versione: **1.0.0 (20-Ott-2022)**
+Versione: **1.1.0 (13-Dic-2022)**
 
 ## Descrizione
 
@@ -27,9 +27,9 @@ Tipo struttura che contiene i numeri dei pin relativi ai canali rosso (R), verde
 
 ```cpp
 typedef struct {
-    uint8_t r_led;
-    uint8_t g_led;
-    uint8_t b_led;
+    int r_led;
+    int g_led;
+    int b_led;
 } rgb_led_t;
 ```
 
@@ -68,6 +68,18 @@ typedef enum {
 Imposta il LED con il colore `color`.
 Per spegnere il LED, utilizzare il colore `C8_BLACK`.
 
+### `setBlink(c8_color_t color1, c8_color_t color2, unsigned long time1, unsigned long time2)`
+
+Imposta il lampeggio del LED su due colori: ciclicamente il LED si accende con il colore `color1` per la durata `time1` e
+successivamente si accende con il colore `color2` per la durata `time2`.
+Se si vuole un lampeggio su singolo colore, impostare uno dei due colori come `C8_BLACK`.
+Questo metodo imposta solamente i colori e i timer, per eseguire il lampeggio va inserito il metodo `loop` all'interno del loop di esecuzione del programma.
+
+### `loop(void)`
+
+Gestisce il lampeggio del LED. I colori e i timer vanno impostati con il metodo `setBlink`.
+
 ## Cronologia Versioni
 
 - `1.0.0` (13-Ott-2022) - Versione iniziale
+- `1.1.0` (13-Dic-2022) - Aggiunti i metodi per il lampeggio

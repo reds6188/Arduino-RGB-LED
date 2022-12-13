@@ -18,20 +18,26 @@ void RgbLed::setColor(c8_color_t color) {
 	bool g = ((color >> 1) & 0x01);
 	bool b = ((color >> 2) & 0x01);
 
-	Serial.printf("(R,G,B) = (%d,%d,%d)\n", r, g, b);
+	digitalWrite(pin.r_led, (driver_mode == LS_DRIVER ? r : !r));
+	digitalWrite(pin.g_led, (driver_mode == LS_DRIVER ? g : !g));
+	digitalWrite(pin.b_led, (driver_mode == LS_DRIVER ? b : !b));
+}
 
-	digitalWrite(pin.r_led, (driver_mode == LS_DRIVER ? r : ((~r)&0x01)));
-	digitalWrite(pin.g_led, (driver_mode == LS_DRIVER ? g : ((~g)&0x01)));
-	digitalWrite(pin.b_led, (driver_mode == LS_DRIVER ? b : ((~b)&0x01)));
-	/*
-	bool r = (color & 0x01);
-	bool g = ((color >> 1) & 0x01);
-	bool b = ((color >> 2) & 0x01);
+void RgbLed::setBlink(c8_color_t color1, c8_color_t color2, unsigned long time1, unsigned long time2) {
+	blink[0].color = color1;
+	blink[0].time = time1;
+	blink[1].color = color2;
+	blink[1].time = time2;
 
-	Serial.printf("(R,G,B) = (%d,%d,%d)\n", r, g, b);
+	blink_index = false;
+	setColor(color1);
+}
 
-	digitalWrite(pin.r_led, (driver_mode ? r : ~r));
-	digitalWrite(pin.g_led, (driver_mode ? g : ~g));
-	digitalWrite(pin.b_led, (driver_mode ? b : ~b));
-	*/
+void RgbLed::loop(void) {
+	
+	if((millis() - timer_blink) > blink[blink_index].time) {
+		timer_blink = millis();
+		blink_index = !blink_index;
+		setColor(blink[blink_index].color);
+	}
 }

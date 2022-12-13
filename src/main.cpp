@@ -17,34 +17,10 @@ void setup() {
 	Serial.begin(115200);
 	Serial.println("============   START   ============");
 	led.setColor(C8_BLUE);
+	delay(2000);
+	led.setBlink(C8_YELLOW,C8_BLACK,500,500);
 }
 
 void loop() {
-	if((millis() - TimerLoop) > 1000)
-	{
-		TimerLoop = millis();
-		if(counter < 7)
-			counter++;
-		else
-			counter = 0;
-
-		Serial.println(counter);
-		
-		/*
-		switch(counter)
-		{
-			case 1: color = C8_RED;		break;
-			case 2: color = C8_GREEN;	break;
-			case 3: color = C8_YELLOW;	break;
-			case 4: color = C8_BLUE;	break;
-			case 5: color = C8_FUCHSIA; break;
-			case 6: color = C8_CYAN;	break;
-			case 7: color = C8_WHITE;	break;
-			case 0:
-			default: color = C8_BLACK;	break;
-		}
-
-		led.setColor(color);
-		*/
-	}
+	led.loop();
 }

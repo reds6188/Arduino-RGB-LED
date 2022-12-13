@@ -22,18 +22,28 @@ typedef enum {
 } c8_color_t;
 
 typedef struct {
-    uint8_t r_led;
-    uint8_t g_led;
-    uint8_t b_led;
+    int r_led;
+    int g_led;
+    int b_led;
 } rgb_led_t;
+
+typedef struct {
+    c8_color_t color;
+    unsigned long time;
+} led_blink_t;
 
 class RgbLed {
 	private:
         rgb_led_t pin;
         led_driver_t driver_mode;
+        led_blink_t blink[2];
+        unsigned long timer_blink;
+        bool blink_index;
 	public:
 		RgbLed(rgb_led_t led_pin, led_driver_t led_driver_mode);
         void setColor(c8_color_t color);
+        void setBlink(c8_color_t color1, c8_color_t color2, unsigned long time1, unsigned long time2);
+        void loop(void);
 };
 
 #endif  /* RGB_LED_H_ */
